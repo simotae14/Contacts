@@ -15,41 +15,47 @@ class ListContacts extends Component {
     })
   }
   render() {
+    const { query } = this.state;
+    const { contacts, onDeleteContact } = this.props;
+    // lisya filtrata
+    const showingContracts = query === ''
+      ? contacts
+      : contacts.filter((c) => (
+          c.name.toLowerCase().includes(query.toLowerCase())
+      ));
     return (
         <div className='list-contacts'>
-          {JSON.stringify(this.state)}
           <div className='list-contacts-top'>
             <input
               className='search-contacts'
               type='text'
               placeholder='Search Contacts'
-              value={this.state.query}
+              value={query}
               onChange={(event) => this.updateQuery(event.target.value)}
             />
-          </div>
-          <ol className='contact-list'>
-            { this.props.contacts.map((contact) => (
-                <li key={contact.id} className='contact-list-item'>
-                  <div
-                    className='contact-avatar'
-                    style={{
-                      backgroundImage: `url(${contact.avatarURL})`
-                    }}
-                  ></div>
-                  <div className='contact-details'>
-                    <p>{contact.name}</p>
-                    <p>{contact.handle}</p>
-                  </div>
-                  <button
-                    className='contact-remove'
-                    onClick={() => this.props.onDeleteContact(contact) }
-                  >
-                    Remove
-                  </button>
-                </li>
-            ))}
-        </ol>
-
+            </div>
+            <ol className='contact-list'>
+              { showingContracts.map((contact) => (
+                  <li key={contact.id} className='contact-list-item'>
+                    <div
+                      className='contact-avatar'
+                      style={{
+                        backgroundImage: `url(${contact.avatarURL})`
+                      }}
+                    ></div>
+                    <div className='contact-details'>
+                      <p>{contact.name}</p>
+                      <p>{contact.handle}</p>
+                    </div>
+                    <button
+                      className='contact-remove'
+                      onClick={() => onDeleteContact(contact) }
+                    >
+                      Remove
+                    </button>
+                  </li>
+              ))}
+          </ol>
         </div>
     )
   }
