@@ -21,6 +21,9 @@ class App extends Component {
         return c.id !== contact.id;
       })
     }))
+
+    // rimuovo il contatto anche dal DB remoto
+    ContactsAPI.remove(contact);
   }
   render() {
       return (
